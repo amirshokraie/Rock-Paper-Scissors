@@ -14,6 +14,11 @@ class TestRPSComparison(unittest.TestCase):
         self.assertEqual(self.paper, Paper())
         self.assertEqual(self.scissors, Scissors())
 
+    def test_not_equal(self):
+        self.assertNotEqual(self.rock, self.paper)
+        self.assertNotEqual(self.paper, self.scissors)
+        self.assertNotEqual(self.scissors, self.rock)
+
 
 if __name__ == "__main__":
     unittest.main()
