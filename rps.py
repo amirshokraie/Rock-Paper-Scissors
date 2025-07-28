@@ -59,11 +59,22 @@ class Scissors(BaseMove):
 
 class AbstractPlayer(ABC):
     def __init__(self, name=None):
-        self.name = name if isinstance(name, str) else str(id(self))
-        self.score = 0
+        self._name = name if isinstance(name, str) else str(id(self))
+        self._score = 0
 
     def win(self):
-        self.score += 1
+        self._score += 1
+    
+    @property
+    def name(self):
+        return self._name.title()
+    
+    @property
+    def score(self):
+        return self._score
+
+    def __str__(self):
+        return f"{self._score} point{'s' if self._score != 1 else ''}."
 
     @abstractmethod
     def make_move(self):
@@ -71,18 +82,20 @@ class AbstractPlayer(ABC):
         pass
 
 class Player(AbstractPlayer):
+    
+    def make_move(self, move):
 
-    def __init__(self, name=None):
-        self.name = name if isinstance(name, str) else str(id(self))
-        self.score = 0
+        if move.upper() in [_ROCK, _PAPER, _SCISSORS]:
+            return move.upper()
+        
+        raise ValueError("'move' only can be one of R', 'P', or 'S'")
 
 
 class ComputerPlayer(AbstractPlayer):
     def __init__(self, name=None):
         super().__init__(name)
-        self.name = "Computer " + self.name
+        self._name = "Computer " + self._name
 
     def make_move(self):
         return random.choice([_ROCK, _PAPER, _SCISSORS])
-
 
