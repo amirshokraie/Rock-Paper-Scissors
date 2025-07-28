@@ -62,6 +62,13 @@ class TestRPSComparison(unittest.TestCase):
 
 
 class TestPlayers(unittest.TestCase):
+    
+    def base_player_initialization_error(self):
+        with self.assertRaises(TypeError, msg="BasePlayer should not be instantiable directly"):
+            # trying to instantiate BasePlayer directly must raise a TypeError
+            # Becuase BasePlayer inherites from ABC class
+            _rps.BasePlayer()
+    
     def test_score(self):
         # checking both player and computer player score changing
         for player in [_rps.Player(), _rps.ComputerPlayer()]:
@@ -120,7 +127,6 @@ class TestPlayers(unittest.TestCase):
             moves.add(move)
 
         # Confirm that all 3 move types were used
-        print(moves)
         self.assertEqual(moves, {_rps.Rock(), _rps.Paper(), _rps.Scissors()})
 
 
