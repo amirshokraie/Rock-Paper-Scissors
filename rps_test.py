@@ -138,6 +138,15 @@ class TestRPSGame(unittest.TestCase):
         self.assertIsInstance(game.player2, _rps.ComputerPlayer)
         self.assertEqual(game.winner_score, 3)
 
+    def test_custom_players(self):
+        p1 = _rps.Player("Python")
+        p2 = _rps.Player("tester")
+        game = _rps.RPSGame(p1, p2, winner_score=5)
+
+        self.assertEqual(game.player1.name, "Python")
+        self.assertEqual(game.player2.name, "Tester")
+        self.assertEqual(game.winner_score, 5)
+
     def test_draw_does_not_affect_score(self):
         p1 = _rps.Player("DrawTester1")
         p2 = _rps.Player("DrawTester2")
