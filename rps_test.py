@@ -62,7 +62,7 @@ class TestRPSComparison(unittest.TestCase):
 
 
 class TestPlayers(unittest.TestCase):
-     def test_score(self):
+    def test_score(self):
         # checking both player and computer player score changing
         for player in [_rps.Player(), _rps.ComputerPlayer()]:
             self.assertEqual(player.score, 0)
@@ -70,8 +70,13 @@ class TestPlayers(unittest.TestCase):
             self.assertEqual(player.score, 1)
             player.win() 
             self.assertEqual(player.score, 2) 
-        
+    
 
+    def test_computer_player_name(self):
+        computer1 = _rps.ComputerPlayer()
+        computer2 = _rps.ComputerPlayer("smart pc")
+        self.assertTrue(computer1.name.startswith("Computer"))
+        self.assertTrue(computer2.name.startswith("Computer"))
 
 if __name__ == "__main__":
     unittest.main()
