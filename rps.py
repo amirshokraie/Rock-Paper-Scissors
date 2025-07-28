@@ -146,3 +146,15 @@ class RPSGame:
             return self.player2
         return None
     
+
+if __name__ == "__main__":
+    player_name = input("Your name: ")
+    game = RPSGame(Player(player_name), ComputerPlayer(), winner_score=2)
+
+    while not game.get_winner():
+        player_input = input(f"Enter your move ({_ROCK}, {_PAPER}, {_SCISSORS}): ")
+        game.play_one_hand(player_input)
+        print(f"{game.player1.name}: {game.player1.score},\t{game.player2.name}: {game.player2.score}")
+
+    winner = game.get_winner()
+    print(f"{winner.name} wins the game with {winner.score} points!")
