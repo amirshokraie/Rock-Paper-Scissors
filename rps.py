@@ -75,9 +75,32 @@ class BasePlayer(ABC):
 
     def __str__(self):
         return f"{self._score} point{'s' if self._score != 1 else ''}."
+    
+    def _resolve_move(self, move: str | BaseMove):
+        if isinstance(move, BaseMove):
+            return move
+        elif not isinstance(move, str):
+            type_name = (
+                move.__name__
+                if isclass(move)
+                else type(move).__name__
+            )
+            raise TypeError(
+                f"'choice' must be of type 'str' or 'BaseMove', \
+                but got type '{type_name}' instead."
+                )
+
+        if move.upper() == _ROCK:
+            return Rock()
+        elif move.upper() == _PAPER:
+            return Paper()
+        elif move.upper() == _SCISSORS:
+            return Scissors()
+        else:
+            raise ValueError(f"Invalid move: {move}")
 
     @abstractmethod
-    def make_move(self):
+    def make_move(self, move=None):
         """Return a move, e.g., 'R', 'P', or 'S'"""
         pass
 
@@ -96,7 +119,7 @@ class ComputerPlayer(BasePlayer):
         super().__init__(name)
         self._name = "Computer " + self._name
 
-    def make_move(self):
+    def make_move(self, move=None):
         return random.choice([_ROCK, _PAPER, _SCISSORS])
 
 
@@ -106,31 +129,8 @@ class RPSGame:
         player1 = player1 if isinstance(player1, BasePlayer) else ComputerPlayer()
         player2 = player2 if isinstance(player2, BasePlayer) else ComputerPlayer()
 
-        self._rock , self._paper, self._scissors = Rock(), Paper(), Scissors()
-
     
     def play_one_hand(self, player1_move=None, player2_move=None):
         pass
 
-    def _resolve_move(self, move: str | BaseMove):
-        if isinstance(move, BaseMove):
-            return move
-        elif not isinstance(move, str):
-            type_name = (
-                move.__name__
-                if isclass(move)
-                else type(move).__name__
-            )
-            raise TypeError(
-                f"'choice' must be of type 'str' or 'BaseMove', \
-                but got type '{type_name}' instead."
-                )
-
-        if move.upper() == _ROCK:
-            return self._rock
-        elif move.upper() == _PAPER:
-            return self._paper
-        elif move.upper() == _SCISSORS:
-            return self._scissors
-        else:
-            raise ValueError(f"Invalid move: {move}")
+    
