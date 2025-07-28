@@ -62,7 +62,7 @@ class TestRPSComparison(unittest.TestCase):
 
 
 class TestPlayers(unittest.TestCase):
-    
+
     def base_player_initialization_error(self):
         with self.assertRaises(TypeError, msg="BasePlayer should not be instantiable directly"):
             # trying to instantiate BasePlayer directly must raise a TypeError
@@ -128,6 +128,22 @@ class TestPlayers(unittest.TestCase):
 
         # Confirm that all 3 move types were used
         self.assertEqual(moves, {_rps.Rock(), _rps.Paper(), _rps.Scissors()})
+
+
+class TestRPSGame(unittest.TestCase):
+
+    def test_draw_does_not_affect_score(self):
+        p1 = _rps.Player("DrawTester1")
+        p2 = _rps.Player("DrawTester2")
+        game = _rps.RPSGame(p1, p2, winner_score=1)
+
+        game.play_one_hand(_rps._ROCK, _rps._ROCK)
+        game.play_one_hand(_rps._PAPER, _rps._PAPER)
+        game.play_one_hand(_rps._SCISSORS, _rps._SCISSORS)
+        
+        self.assertEqual(p1.score, 0)
+        self.assertEqual(p2.score, 0)
+        self.assertIsNone(game.get_winner())
 
 
 if __name__ == "__main__":
