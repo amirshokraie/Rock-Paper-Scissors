@@ -119,7 +119,8 @@ class Player(BasePlayer):
 class ComputerPlayer(BasePlayer):
     def __init__(self, name=None):
         super().__init__(name)
-        self._name = "Computer " + self._name
+        if not name or not name.lower().startswith("computer"):
+            self._name = f"Computer {self._name}"
 
     def make_move(self, move=None):
         move_instance =  self._resolve_move(move or random.choice([_ROCK, _PAPER, _SCISSORS]))
