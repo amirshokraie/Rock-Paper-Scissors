@@ -132,6 +132,12 @@ class TestPlayers(unittest.TestCase):
 
 class TestRPSGame(unittest.TestCase):
 
+    def test_default_initialization(self):
+        game = _rps.RPSGame()
+        self.assertIsInstance(game.player1, _rps.ComputerPlayer)
+        self.assertIsInstance(game.player2, _rps.ComputerPlayer)
+        self.assertEqual(game.winner_score, 3)
+
     def test_draw_does_not_affect_score(self):
         p1 = _rps.Player("DrawTester1")
         p2 = _rps.Player("DrawTester2")
