@@ -109,5 +109,20 @@ class TestPlayers(unittest.TestCase):
             with self.assertRaises(TypeError):
                 player.make_move(123)
 
+    
+    def test_computer_random_move(self):
+        computer = _rps.ComputerPlayer()
+        moves = set()
+
+        for _ in range(100):  # Used 100 iterations to reduce randomness bias
+            move = computer.make_move()
+            self.assertIsInstance(move, _rps.BaseMove)
+            moves.add(move)
+
+        # Confirm that all 3 move types were used
+        print(moves)
+        self.assertEqual(moves, {_rps.Rock(), _rps.Paper(), _rps.Scissors()})
+
+
 if __name__ == "__main__":
     unittest.main()
