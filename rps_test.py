@@ -21,7 +21,7 @@ class TestRPSComparison(unittest.TestCase):
         # Case 2 : _value is not str -> TypeError
         class NotStringValue(_rps.BaseMove):
             _value = 1234
-        
+
         with self.assertRaises(TypeError):
             NotStringValue()
 
@@ -40,16 +40,16 @@ class TestRPSComparison(unittest.TestCase):
         self.assertFalse(self.scissors > self.rock)
         self.assertFalse(self.paper > self.scissors)
         self.assertFalse(self.rock > self.paper)
-    
+
     def test_less_than(self):
-        self.assertLess(self.scissors, self.rock)  
+        self.assertLess(self.scissors, self.rock)
         self.assertLess(self.paper, self.scissors)
-        self.assertLess(self.rock,  self.paper)
+        self.assertLess(self.rock, self.paper)
 
         self.assertFalse(self.rock < self.scissors)
         self.assertFalse(self.scissors < self.paper)
         self.assertFalse(self.paper < self.rock)
-    
+
     def test_equal(self):
         self.assertEqual(self.rock, _rps.Rock())
         self.assertEqual(self.paper, _rps.Paper())
@@ -64,20 +64,21 @@ class TestRPSComparison(unittest.TestCase):
 class TestPlayers(unittest.TestCase):
 
     def base_player_initialization_error(self):
-        with self.assertRaises(TypeError, msg="BasePlayer should not be instantiable directly"):
+        with self.assertRaises(
+            TypeError, msg="BasePlayer should not be instantiable directly"
+        ):
             # trying to instantiate BasePlayer directly must raise a TypeError
             # Becuase BasePlayer inherites from ABC class
             _rps.BasePlayer()
-    
+
     def test_score(self):
         # checking both player and computer player score changing
         for player in [_rps.Player(), _rps.ComputerPlayer()]:
             self.assertEqual(player.score, 0)
-            player.win() 
+            player.win()
             self.assertEqual(player.score, 1)
-            player.win() 
-            self.assertEqual(player.score, 2) 
-    
+            player.win()
+            self.assertEqual(player.score, 2)
 
     def test_computer_player_name(self):
         computer1 = _rps.ComputerPlayer()
@@ -86,7 +87,7 @@ class TestPlayers(unittest.TestCase):
         self.assertTrue(computer2.name.startswith("Computer"))
 
     def test_player_name(self):
-        # name attr should return .title() 
+        # name attr should return .title()
         test_name = "pyTHON COder"
 
         player1 = _rps.Player()
@@ -116,7 +117,6 @@ class TestPlayers(unittest.TestCase):
             with self.assertRaises(TypeError):
                 player.make_move(123)
 
-    
     def test_computer_random_move(self):
         computer = _rps.ComputerPlayer()
         moves = set()
@@ -168,6 +168,7 @@ class TestRPSGame(unittest.TestCase):
         game.play_one_hand(_rps._SCISSORS, _rps._ROCK)  # Player2 wins
         game.play_one_hand(_rps._PAPER, _rps._SCISSORS)  # Player2 wins
         self.assertEqual(game.get_winner(), p2)
+
 
 if __name__ == "__main__":
     unittest.main()
