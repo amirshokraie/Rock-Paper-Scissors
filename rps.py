@@ -99,3 +99,14 @@ class ComputerPlayer(AbstractPlayer):
     def make_move(self):
         return random.choice([_ROCK, _PAPER, _SCISSORS])
 
+
+class RPSGame:
+
+    def __init__(self, player1 = None, player2 = None):
+        player1 = player1 if isinstance(player1, AbstractPlayer) else ComputerPlayer()
+        player2 = player2 if isinstance(player2, AbstractPlayer) else ComputerPlayer()
+
+        self._rock , self._paper, self._scissors = Rock(), Paper(), Scissors()
+
+    
+        
