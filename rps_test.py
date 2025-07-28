@@ -140,11 +140,19 @@ class TestRPSGame(unittest.TestCase):
         game.play_one_hand(_rps._ROCK, _rps._ROCK)
         game.play_one_hand(_rps._PAPER, _rps._PAPER)
         game.play_one_hand(_rps._SCISSORS, _rps._SCISSORS)
-        
+
         self.assertEqual(p1.score, 0)
         self.assertEqual(p2.score, 0)
         self.assertIsNone(game.get_winner())
 
+    def test_get_winner_with_second_player_winning(self):
+        p1 = _rps.Player("Player1")
+        p2 = _rps.Player("Player2")
+        game = _rps.RPSGame(p1, p2, winner_score=2)
+
+        game.play_one_hand(_rps._SCISSORS, _rps._ROCK)  # Player2 wins
+        game.play_one_hand(_rps._PAPER, _rps._SCISSORS)  # Player2 wins
+        self.assertEqual(game.get_winner(), p2)
 
 if __name__ == "__main__":
     unittest.main()
