@@ -108,7 +108,9 @@ class BasePlayer(ABC):
 class Player(BasePlayer):
     
     def make_move(self, move):
-        return self._resolve_move(move)
+        move_instance = self._resolve_move(move)
+        self.last_move = move_instance
+        return move_instance
 
 
 class ComputerPlayer(BasePlayer):
@@ -117,8 +119,9 @@ class ComputerPlayer(BasePlayer):
         self._name = "Computer " + self._name
 
     def make_move(self, move=None):
-        move = move or random.choice([_ROCK, _PAPER, _SCISSORS])
-        return self._resolve_move(move)
+        move_instance =  self._resolve_move(move or random.choice([_ROCK, _PAPER, _SCISSORS]))
+        self.last_move = move_instance
+        return move_instance
 
 
 class RPSGame:
@@ -155,6 +158,7 @@ if __name__ == "__main__":
     while not game.get_winner():
         player_input = input(f"Enter your move ({_ROCK}, {_PAPER}, {_SCISSORS}): ")
         game.play_one_hand(player_input)
+        print(f"{game.player1.name}: : {game.player1.last_move}.\t{game.player2.name}: {game.player2.last_move}")
         print(f"{game.player1.name}: {game.player1.score},\t{game.player2.name}: {game.player2.score}")
 
     winner = game.get_winner()
