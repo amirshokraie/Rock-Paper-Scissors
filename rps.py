@@ -2,3 +2,20 @@ _ROCK = 'R'
 _PAPER = 'P'
 _SCISSORS = 'S'
 
+class BaseMove:
+    """
+    Abstract base class for Rock, Paper and Scissors classes.
+    """
+    _value = None
+
+
+    def __init__(self):
+        if self._value is None:
+            raise NotImplementedError("Subclasses must define '_value'.")
+        elif not isinstance(self._value, str):
+            raise TypeError(f"_value must be a string, got {type(self._value).__name__}")
+        elif self._value.upper() not in self._dominance:
+            raise ValueError(f"Invalid move: {self._value!r}. Must be one of: {_ROCK}, {_PAPER}, {_SCISSORS}")
+        
+
+    
