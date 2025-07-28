@@ -47,6 +47,10 @@ class BaseMove:
     def __str__(self):
         return self.__class__.__name__
     
+    def __hash__(self):
+        return hash(self._value.upper())
+    
+
 class Rock(BaseMove):
     _value = _ROCK
 
