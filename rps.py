@@ -1,6 +1,6 @@
 import random
 from abc import ABC, abstractmethod
-
+from inspect import isclass
 
 _ROCK = 'R'
 _PAPER = 'P'
