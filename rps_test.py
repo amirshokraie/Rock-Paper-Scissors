@@ -1,32 +1,32 @@
 import unittest
-from rps import Rock,Paper,Scissors, BaseMove
+import rps as _rps
 
 
 class TestRPSComparison(unittest.TestCase):
 
     def setUp(self):
-        self.rock = Rock()
-        self.paper = Paper()
-        self.scissors = Scissors()
+        self.rock = _rps.Rock()
+        self.paper = _rps.Paper()
+        self.scissors = _rps.Scissors()
 
     def test_initialization_errors(self):
 
         # Case 1 : _value is not set (is None) -> NotImplementedError:
-        class NoneValue(BaseMove):
+        class NoneValue(_rps.BaseMove):
             pass
 
         with self.assertRaises(NotImplementedError):
             NoneValue()
 
         # Case 2 : _value is not str -> TypeError
-        class NotStringValue(BaseMove):
+        class NotStringValue(_rps.BaseMove):
             _value = 1234
         
         with self.assertRaises(TypeError):
             NotStringValue()
 
         # case 3 : _value is a string but invalid -> ValueError
-        class InvalidStringValue(BaseMove):
+        class InvalidStringValue(_rps.BaseMove):
             _value = "Invalid text for test"
 
         with self.assertRaises(ValueError):
@@ -51,14 +51,26 @@ class TestRPSComparison(unittest.TestCase):
         self.assertFalse(self.paper < self.rock)
     
     def test_equal(self):
-        self.assertEqual(self.rock, Rock())
-        self.assertEqual(self.paper, Paper())
-        self.assertEqual(self.scissors, Scissors())
+        self.assertEqual(self.rock, _rps.Rock())
+        self.assertEqual(self.paper, _rps.Paper())
+        self.assertEqual(self.scissors, _rps.Scissors())
 
     def test_not_equal(self):
         self.assertNotEqual(self.rock, self.paper)
         self.assertNotEqual(self.paper, self.scissors)
         self.assertNotEqual(self.scissors, self.rock)
+
+
+class TestPlayers(unittest.TestCase):
+     def test_score(self):
+        # checking both player and computer player score changing
+        for player in [_rps.Player(), _rps.ComputerPlayer()]:
+            self.assertEqual(player.score, 0)
+            player.win() 
+            self.assertEqual(player.score, 1)
+            player.win() 
+            self.assertEqual(player.score, 2) 
+        
 
 
 if __name__ == "__main__":
