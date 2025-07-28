@@ -44,7 +44,9 @@ class BaseMove:
     def __lt__(self, other):
         return (not self == other) and (not self > other)
 
-
+    def __str__(self):
+        return self.__class__.__name__
+    
 class Rock(BaseMove):
     _value = _ROCK
 
