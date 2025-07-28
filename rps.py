@@ -61,6 +61,7 @@ class BasePlayer(ABC):
     def __init__(self, name=None):
         self._name = name if isinstance(name, str) else str(id(self))
         self._score = 0
+        self.last_move = None
 
     def win(self):
         self._score += 1
