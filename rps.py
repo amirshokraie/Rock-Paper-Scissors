@@ -123,11 +123,17 @@ class ComputerPlayer(BasePlayer):
 class RPSGame:
 
     def __init__(self, player1 = None, player2 = None):
-        player1 = player1 if isinstance(player1, BasePlayer) else ComputerPlayer()
-        player2 = player2 if isinstance(player2, BasePlayer) else ComputerPlayer()
+        self.player1 = player1 if isinstance(player1, BasePlayer) else ComputerPlayer()
+        self.player2 = player2 if isinstance(player2, BasePlayer) else ComputerPlayer()
 
     
     def play_one_hand(self, player1_move=None, player2_move=None):
-        pass
+        move1 = self.player1.make_move(player1_move)
+        move2 = self.player2.make_move(player2_move)
 
-    
+        # Determine result
+        if move1 > move2:
+            self.player1.win()
+        elif move2 > move1:
+            self.player2.win()
+
