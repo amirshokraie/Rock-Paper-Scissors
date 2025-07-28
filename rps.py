@@ -39,5 +39,16 @@ class BaseMove:
     
     def __lt__(self, other):
         return (not self == other) and (not self > other)
-    
-    
+
+
+class Rock(BaseMove):
+    _value = _ROCK
+
+
+class Paper(BaseMove):
+    _value = _PAPER
+
+
+class Scissors(BaseMove):
+    _value = _SCISSORS
+
