@@ -1,3 +1,6 @@
+import random
+from abc import ABC, abstractmethod
+
 
 _ROCK = 'R'
 _PAPER = 'P'
@@ -54,18 +57,32 @@ class Scissors(BaseMove):
     _value = _SCISSORS
 
 
+class AbstractPlayer(ABC):
+    def __init__(self, name=None):
+        self.name = name if isinstance(name, str) else str(id(self))
+        self.score = 0
 
-class Player:
+    def win(self):
+        self.score += 1
+
+    @abstractmethod
+    def make_move(self):
+        """Return a move, e.g., 'R', 'P', or 'S'"""
+        pass
+
+class Player(AbstractPlayer):
 
     def __init__(self, name=None):
         self.name = name if isinstance(name, str) else str(id(self))
         self.score = 0
 
 
-    def win(self):
-        self.score += 1
+class ComputerPlayer(AbstractPlayer):
+    def __init__(self, name=None):
+        super().__init__(name)
+        self.name = "Computer " + self.name
 
     def make_move(self):
-        pass
+        return random.choice([_ROCK, _PAPER, _SCISSORS])
 
 
