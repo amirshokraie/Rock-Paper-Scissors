@@ -77,7 +77,7 @@ class BasePlayer(ABC):
         return self._score
 
     def __str__(self):
-        return f"{self._score} point{'s' if self._score != 1 else ''}."
+        return f"{self.name} has {self._score} point{'s' if self._score != 1 else ''}."
     
     @staticmethod
     def _resolve_move(move: str | BaseMove):
