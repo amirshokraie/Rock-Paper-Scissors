@@ -109,4 +109,28 @@ class RPSGame:
         self._rock , self._paper, self._scissors = Rock(), Paper(), Scissors()
 
     
-        
+    def play_one_hand(self, player1_move=None, player2_move=None):
+        pass
+
+    def _resolve_move(self, move: str | BaseMove):
+        if isinstance(move, BaseMove):
+            return move
+        elif not isinstance(move, str):
+            type_name = (
+                move.__name__
+                if isclass(move)
+                else type(move).__name__
+            )
+            raise TypeError(
+                f"'choice' must be of type 'str' or 'BaseMove', \
+                but got type '{type_name}' instead."
+                )
+
+        if move.upper() == _ROCK:
+            return self._rock
+        elif move.upper() == _PAPER:
+            return self._paper
+        elif move.upper() == _SCISSORS:
+            return self._scissors
+        else:
+            raise ValueError(f"Invalid move: {move}")
