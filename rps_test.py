@@ -41,6 +41,15 @@ class TestRPSComparison(unittest.TestCase):
         self.assertFalse(self.paper > self.scissors)
         self.assertFalse(self.rock > self.paper)
     
+    def test_less_than(self):
+        self.assertLess(self.scissors, self.rock)  
+        self.assertLess(self.paper, self.scissors)
+        self.assertLess(self.rock,  self.paper)
+
+        self.assertFalse(self.rock < self.scissors)
+        self.assertFalse(self.scissors < self.paper)
+        self.assertFalse(self.paper < self.rock)
+    
     def test_equal(self):
         self.assertEqual(self.rock, Rock())
         self.assertEqual(self.paper, Paper())
