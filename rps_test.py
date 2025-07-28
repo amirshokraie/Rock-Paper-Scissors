@@ -88,12 +88,18 @@ class TestPlayers(unittest.TestCase):
         self.assertEqual(player2.name, test_name.title())
 
     def test_move_resolution_from_str(self):
-        # checking both player and computer player's make_move resolution
+        # checking both player and computer player's make_move resolution from string
         for player in [_rps.Player(), _rps.ComputerPlayer()]:
             self.assertIsInstance(player.make_move("r"), _rps.Rock)
             self.assertIsInstance(player.make_move("P"), _rps.Paper)
             self.assertIsInstance(player.make_move("s"), _rps.Scissors)
 
+    def test_move_resolution_from_instance(self):
+        # checking both player and computer player's make_move resolution from instances
+        for player in [_rps.Player(), _rps.ComputerPlayer()]:
+            self.assertIsInstance(player.make_move(_rps.Rock()), _rps.Rock)
+            self.assertIsInstance(player.make_move(_rps.Paper()), _rps.Paper)
+            self.assertIsInstance(player.make_move(_rps.Scissors()), _rps.Scissors)
 
 if __name__ == "__main__":
     unittest.main()
