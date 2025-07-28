@@ -31,6 +31,15 @@ class TestRPSComparison(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             InvalidStringValue()
+
+    def test_greater_than(self):
+        self.assertGreater(self.rock, self.scissors)
+        self.assertGreater(self.scissors, self.paper)
+        self.assertGreater(self.paper, self.rock)
+
+        self.assertFalse(self.scissors > self.rock)
+        self.assertFalse(self.paper > self.scissors)
+        self.assertFalse(self.rock > self.paper)
     
     def test_equal(self):
         self.assertEqual(self.rock, Rock())
