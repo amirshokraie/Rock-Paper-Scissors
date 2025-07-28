@@ -16,6 +16,11 @@ class BaseMove:
             raise TypeError(f"_value must be a string, got {type(self._value).__name__}")
         elif self._value.upper() not in self._dominance:
             raise ValueError(f"Invalid move: {self._value!r}. Must be one of: {_ROCK}, {_PAPER}, {_SCISSORS}")
-        
 
+    def __eq__(self, other):
+        if not isinstance(other, BaseMove):
+            raise TypeError("Can only compare with another BaseMove")
+        
+        return self._value.upper() == other._value.upper()
+    
     
