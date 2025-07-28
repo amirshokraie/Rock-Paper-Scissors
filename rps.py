@@ -1,3 +1,4 @@
+
 _ROCK = 'R'
 _PAPER = 'P'
 _SCISSORS = 'S'
@@ -51,4 +52,20 @@ class Paper(BaseMove):
 
 class Scissors(BaseMove):
     _value = _SCISSORS
+
+
+
+class Player:
+
+    def __init__(self, name=None):
+        self.name = name if isinstance(name, str) else str(id(self))
+        self.score = 0
+
+
+    def win(self):
+        self.score += 1
+
+    def make_move(self):
+        pass
+
 
