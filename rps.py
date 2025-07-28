@@ -101,17 +101,13 @@ class BasePlayer(ABC):
 
     @abstractmethod
     def make_move(self, move=None):
-        """Return a move, e.g., 'R', 'P', or 'S'"""
+        """Return a move object, e.g., Rock(), Paper(), or Scissors()"""
         pass
 
 class Player(BasePlayer):
     
     def make_move(self, move):
-
-        if move.upper() in [_ROCK, _PAPER, _SCISSORS]:
-            return move.upper()
-        
-        raise ValueError("'move' only can be one of R', 'P', or 'S'")
+        return self._resolve_move(move)
 
 
 class ComputerPlayer(BasePlayer):
@@ -120,7 +116,8 @@ class ComputerPlayer(BasePlayer):
         self._name = "Computer " + self._name
 
     def make_move(self, move=None):
-        return random.choice([_ROCK, _PAPER, _SCISSORS])
+        move = move or random.choice([_ROCK, _PAPER, _SCISSORS])
+        return self._resolve_move(move)
 
 
 class RPSGame:
