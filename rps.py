@@ -37,3 +37,7 @@ class BaseMove:
         them = other._value.upper()
         return them in self._dominance.get(me, [])
     
+    def __lt__(self, other):
+        return (not self == other) and (not self > other)
+    
+    
