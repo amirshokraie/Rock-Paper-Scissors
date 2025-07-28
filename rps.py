@@ -6,6 +6,12 @@ class BaseMove:
     """
     Abstract base class for Rock, Paper and Scissors classes.
     """
+
+    _dominance = {
+        _ROCK: [_SCISSORS],     # Rock beats Scissors
+        _SCISSORS: [_PAPER],    # Scissors beats Paper
+        _PAPER: [_ROCK],        # Paper beats Rock
+    }
     _value = None
 
 
@@ -23,4 +29,11 @@ class BaseMove:
         
         return self._value.upper() == other._value.upper()
     
+    def __gt__(self, other):
+        if not isinstance(other, BaseMove):
+            raise TypeError("Can only compare with another BaseMove")
+        
+        me = self._value.upper()
+        them = other._value.upper()
+        return them in self._dominance.get(me, [])
     
