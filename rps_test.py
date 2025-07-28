@@ -78,5 +78,14 @@ class TestPlayers(unittest.TestCase):
         self.assertTrue(computer1.name.startswith("Computer"))
         self.assertTrue(computer2.name.startswith("Computer"))
 
+    def test_player_name(self):
+        # name attr should return .title() 
+        test_name = "pyTHON COder"
+
+        player1 = _rps.Player()
+        player2 = _rps.Player(test_name)
+        self.assertEqual(player1.name, str(id(player1)))
+        self.assertEqual(player2.name, test_name.title())
+
 if __name__ == "__main__":
     unittest.main()
