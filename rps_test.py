@@ -101,5 +101,13 @@ class TestPlayers(unittest.TestCase):
             self.assertIsInstance(player.make_move(_rps.Paper()), _rps.Paper)
             self.assertIsInstance(player.make_move(_rps.Scissors()), _rps.Scissors)
 
+    def test_invalid_move(self):
+        # checking both player and computer player's make_move raising errors
+        for player in [_rps.Player(), _rps.ComputerPlayer()]:
+            with self.assertRaises(ValueError):
+                player.make_move("X")
+            with self.assertRaises(TypeError):
+                player.make_move(123)
+
 if __name__ == "__main__":
     unittest.main()
