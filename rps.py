@@ -57,7 +57,7 @@ class Scissors(BaseMove):
     _value = _SCISSORS
 
 
-class AbstractPlayer(ABC):
+class BasePlayer(ABC):
     def __init__(self, name=None):
         self._name = name if isinstance(name, str) else str(id(self))
         self._score = 0
@@ -81,7 +81,7 @@ class AbstractPlayer(ABC):
         """Return a move, e.g., 'R', 'P', or 'S'"""
         pass
 
-class Player(AbstractPlayer):
+class Player(BasePlayer):
     
     def make_move(self, move):
 
@@ -91,7 +91,7 @@ class Player(AbstractPlayer):
         raise ValueError("'move' only can be one of R', 'P', or 'S'")
 
 
-class ComputerPlayer(AbstractPlayer):
+class ComputerPlayer(BasePlayer):
     def __init__(self, name=None):
         super().__init__(name)
         self._name = "Computer " + self._name
@@ -103,8 +103,8 @@ class ComputerPlayer(AbstractPlayer):
 class RPSGame:
 
     def __init__(self, player1 = None, player2 = None):
-        player1 = player1 if isinstance(player1, AbstractPlayer) else ComputerPlayer()
-        player2 = player2 if isinstance(player2, AbstractPlayer) else ComputerPlayer()
+        player1 = player1 if isinstance(player1, BasePlayer) else ComputerPlayer()
+        player2 = player2 if isinstance(player2, BasePlayer) else ComputerPlayer()
 
         self._rock , self._paper, self._scissors = Rock(), Paper(), Scissors()
 
