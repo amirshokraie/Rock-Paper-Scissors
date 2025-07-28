@@ -79,7 +79,8 @@ class BasePlayer(ABC):
     def __str__(self):
         return f"{self._score} point{'s' if self._score != 1 else ''}."
     
-    def _resolve_move(self, move: str | BaseMove):
+    @staticmethod
+    def _resolve_move(move: str | BaseMove):
         if isinstance(move, BaseMove):
             return move
         elif not isinstance(move, str):
