@@ -196,7 +196,7 @@ class RPSGame:
 
 if __name__ == "__main__":
     player_name = input("Your name: ")
-    game = RPSGame(Player(player_name), ComputerPlayer(), winner_score=2)
+    game = RPSGame(Player(player_name or None), ComputerPlayer(), winner_score=2)
 
     play_again = True
     while play_again:
@@ -219,9 +219,13 @@ if __name__ == "__main__":
         )
 
         winner = game.get_winner()
-        if winner:
-            print(f"{winner.name} wins the game with {winner.score} points!")
-            response = input("Type 'Y' to play again, or anything else to quit: ").strip().upper()
-            play_again = response == "Y"
-            if play_again:
-                game.reset_scores()
+        if winner is None:
+            continue  # No winner yet, loop again
+
+        print(f"{winner.name} wins the game with {winner.score} points!")
+
+        response = input("Type 'Y' to play again, or anything else to quit: ").strip().upper()
+        play_again = response == "Y"
+
+        if play_again:
+            game.reset_scores()
