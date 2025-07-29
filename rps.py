@@ -163,6 +163,10 @@ class RPSGame:
             return self.player2
         return None
 
+    def reset_scores(self):
+        self.player1.reset_score()
+        self.player2.reset_score()
+
 
 if __name__ == "__main__":
     player_name = input("Your name: ")
