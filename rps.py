@@ -76,6 +76,9 @@ class BasePlayer(ABC):
     def win(self):
         self._score += 1
 
+    def reset_score(self):
+        self._score = 0
+
     @property
     def name(self):
         return self._name.title()
