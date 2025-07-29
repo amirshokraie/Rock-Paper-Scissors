@@ -10,27 +10,19 @@ class TestRPSComparison(unittest.TestCase):
         self.scissors = _rps.Scissors()
 
     def test_initialization_errors(self):
-
-        # Case 1 : _value is not set (is None) -> NotImplementedError:
+        # Case 1: _move is not set (None) → NotImplementedError
         class NoneValue(_rps.BaseMove):
             pass
 
         with self.assertRaises(NotImplementedError):
             NoneValue()
 
-        # Case 2 : _value is not str -> TypeError
-        class NotStringValue(_rps.BaseMove):
-            _value = 1234
+        # Case 2: _move is not a Move enum  → TypeError
+        class NotEnumValue(_rps.BaseMove):
+            _move = 1234
 
         with self.assertRaises(TypeError):
-            NotStringValue()
-
-        # case 3 : _value is a string but invalid -> ValueError
-        class InvalidStringValue(_rps.BaseMove):
-            _value = "Invalid text for test"
-
-        with self.assertRaises(ValueError):
-            InvalidStringValue()
+            NotEnumValue()
 
     def test_greater_than(self):
         self.assertGreater(self.rock, self.scissors)
@@ -152,9 +144,9 @@ class TestRPSGame(unittest.TestCase):
         p2 = _rps.Player("DrawTester2")
         game = _rps.RPSGame(p1, p2, winner_score=1)
 
-        game.play_one_hand(_rps._ROCK, _rps._ROCK)
-        game.play_one_hand(_rps._PAPER, _rps._PAPER)
-        game.play_one_hand(_rps._SCISSORS, _rps._SCISSORS)
+        game.play_one_hand(_rps.Move.ROCK, _rps.Move.ROCK)
+        game.play_one_hand(_rps.Move.PAPER, _rps.Move.PAPER)
+        game.play_one_hand(_rps.Move.SCISSORS, _rps.Move.SCISSORS)
 
         self.assertEqual(p1.score, 0)
         self.assertEqual(p2.score, 0)
@@ -165,8 +157,8 @@ class TestRPSGame(unittest.TestCase):
         p2 = _rps.Player("Player2")
         game = _rps.RPSGame(p1, p2, winner_score=2)
 
-        game.play_one_hand(_rps._SCISSORS, _rps._ROCK)  # Player2 wins
-        game.play_one_hand(_rps._PAPER, _rps._SCISSORS)  # Player2 wins
+        game.play_one_hand(_rps.Move.SCISSORS, _rps.Move.ROCK)  # Player2 wins
+        game.play_one_hand(_rps.Move.PAPER, _rps.Move.SCISSORS)  # Player2 wins
         self.assertEqual(game.get_winner(), p2)
 
 
