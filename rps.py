@@ -221,7 +221,7 @@ if __name__ == "__main__":
         winner = game.get_winner()
         if winner:
             print(f"{winner.name} wins the game with {winner.score} points!")
-            response = input("Do you want to play again? (Y/N): ").strip().upper()
+            response = input("Type 'Y' to play again, or anything else to quit: ").strip().upper()
             play_again = response == "Y"
             if play_again:
                 game.reset_scores()
