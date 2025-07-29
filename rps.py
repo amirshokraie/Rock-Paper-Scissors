@@ -1,70 +1,72 @@
 import random
 from abc import ABC, abstractmethod
-from inspect import isclass
+from enum import Enum
 
-_ROCK = "R"
-_PAPER = "P"
-_SCISSORS = "S"
 
+class Move(Enum):
+    ROCK = "R"
+    PAPER = "P"
+    SCISSORS = "S"
+
+    @classmethod
+    def get_move(cls, raw_move: str):
+        """Sanitize and validate user input."""
+        sanitized = raw_move.strip().upper()
+        for move in cls:
+            if move.value == sanitized:
+                return move
+        raise ValueError(f"Invalid move '{raw_move}'. Choose from: {[m.value for m in cls]}")
+
+    def __str__(self):
+        return self.name.capitalize()
+    
 
 class BaseMove:
     """
-    Abstract base class for Rock, Paper and Scissors classes.
+    Abstract base class for Rock, Paper, and Scissors classes.
     """
-
     _dominance = {
-        _ROCK: [_SCISSORS],  # Rock beats Scissors
-        _SCISSORS: [_PAPER],  # Scissors beats Paper
-        _PAPER: [_ROCK],  # Paper beats Rock
+        Move.ROCK: [Move.SCISSORS],
+        Move.SCISSORS: [Move.PAPER],
+        Move.PAPER: [Move.ROCK],
     }
-    _value = None
+    _move = None
 
     def __init__(self):
-        if self._value is None:
-            raise NotImplementedError("Subclasses must define '_value'.")
-        elif not isinstance(self._value, str):
-            raise TypeError(
-                f"_value must be a string, got {type(self._value).__name__}"
-            )
-        elif self._value.upper() not in self._dominance:
-            raise ValueError(
-                f"Invalid move: {self._value!r}. Must be one of: {_ROCK}, {_PAPER}, {_SCISSORS}"
-            )
+        if self._move is None:
+            raise NotImplementedError("Subclasses must define '_move'.")
+        if not isinstance(self._move, Move):
+            raise TypeError(f"_move must be of type Move, not {type(self._move).__name__}")
 
     def __eq__(self, other):
         if not isinstance(other, BaseMove):
-            raise TypeError("Can only compare with another BaseMove")
-
-        return self._value.upper() == other._value.upper()
+            raise TypeError
+        return  self._move == other._move
 
     def __gt__(self, other):
         if not isinstance(other, BaseMove):
-            raise TypeError("Can only compare with another BaseMove")
-
-        me = self._value.upper()
-        them = other._value.upper()
-        return them in self._dominance.get(me, [])
+            raise TypeError
+        return other._move in self._dominance[self._move]
 
     def __lt__(self, other):
-        return (not self == other) and (not self > other)
+        return not (self > other and self == other)
 
     def __str__(self):
-        return self.__class__.__name__
+        return self._move.name.capitalize()
 
     def __hash__(self):
-        return hash(self._value.upper())
+        return hash(self._move)
+
 
 
 class Rock(BaseMove):
-    _value = _ROCK
-
+    _move = Move.ROCK
 
 class Paper(BaseMove):
-    _value = _PAPER
-
+    _move = Move.PAPER
 
 class Scissors(BaseMove):
-    _value = _SCISSORS
+    _move = Move.SCISSORS
 
 
 class BasePlayer(ABC):
@@ -91,24 +93,19 @@ class BasePlayer(ABC):
         return f"{self.name} has {self._score} point{'s' if self._score != 1 else ''}."
 
     @staticmethod
-    def _resolve_move(move: str | BaseMove):
+    def _resolve_move(move: str | BaseMove | Move):
         if isinstance(move, BaseMove):
             return move
-        elif not isinstance(move, str):
-            type_name = move.__name__ if isclass(move) else type(move).__name__
-            raise TypeError(
-                f"'choice' must be of type 'str' or 'BaseMove', \
-                but got type '{type_name}' instead."
-            )
+        if isinstance(move, Move):
+            match move:
+                case Move.ROCK: return Rock()
+                case Move.PAPER: return Paper()
+                case Move.SCISSORS: return Scissors()
+        if isinstance(move, str):
+            move_enum = Move.from_input(move)
+            return BasePlayer._resolve_move(move_enum)
 
-        if move.upper() == _ROCK:
-            return Rock()
-        elif move.upper() == _PAPER:
-            return Paper()
-        elif move.upper() == _SCISSORS:
-            return Scissors()
-        else:
-            raise ValueError(f"Invalid move: {move}")
+        raise TypeError(f"Invalid move type: {type(move).__name__}")
 
     @abstractmethod
     def make_move(self, move=None):
@@ -131,9 +128,9 @@ class ComputerPlayer(BasePlayer):
             self._name = f"Computer {self._name}"
 
     def make_move(self, move=None):
-        move_instance = self._resolve_move(
-            move or random.choice([_ROCK, _PAPER, _SCISSORS])
-        )
+        if move is None:
+            move = random.choice(list(Move))  # choose a Move enum, not a string
+        move_instance = self._resolve_move(move)
         self.last_move = move_instance
         return move_instance
 
@@ -172,15 +169,24 @@ if __name__ == "__main__":
     player_name = input("Your name: ")
     game = RPSGame(Player(player_name), ComputerPlayer(), winner_score=2)
 
-    while not game.get_winner():
-        player_input = input(f"Enter your move ({_ROCK}, {_PAPER}, {_SCISSORS}): ")
-        game.play_one_hand(player_input)
-        print(
-            f"{game.player1.name}: : {game.player1.last_move}.\t{game.player2.name}: {game.player2.last_move}"
-        )
-        print(
-            f"{game.player1.name}: {game.player1.score},\t{game.player2.name}: {game.player2.score}"
-        )
+    play_again = True
+    while play_again:
+        try:
+            user_input = input(f"Enter your move ({', '.join(m.value for m in Move)}): ")
+            player_move = Move.get_move(user_input)
+        except ValueError as e:
+            print(e)
+            continue
 
-    winner = game.get_winner()
-    print(f"{winner.name} wins the game with {winner.score} points!")
+        game.play_one_hand(player_move)
+
+        print(f"{game.player1.name}: {game.player1.last_move}\t{game.player2.name}: {game.player2.last_move}")
+        print(f"{game.player1.name}: {game.player1.score},\t{game.player2.name}: {game.player2.score}")
+
+        winner = game.get_winner()
+        if winner:
+            print(f"{winner.name} wins the game with {winner.score} points!")
+            response = input("Do you want to play again? (Y/N): ").strip().upper()
+            play_again = response == "Y"
+            if play_again:
+                game.reset_scores()
