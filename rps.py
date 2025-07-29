@@ -10,7 +10,12 @@ class Move(Enum):
 
     @classmethod
     def get_move(cls, raw_move: str):
-        """Sanitize and validate user input."""
+        """Sanitize and validate raw_move (e.g., 'R', 'P', 'S') and return corresponding Move enum."""
+        if not isinstance(raw_move, str):
+            raise TypeError(
+                f"Expected a string for raw_move, but got {type(raw_move).__name__} instead."
+            )
+        
         sanitized = raw_move.strip().upper()
         for move in cls:
             if move.value == sanitized:
@@ -49,7 +54,7 @@ class BaseMove:
         return other._move in self._dominance[self._move]
 
     def __lt__(self, other):
-        return not (self > other and self == other)
+        return not (self > other or self == other)
 
     def __str__(self):
         return self._move.name.capitalize()
@@ -102,7 +107,7 @@ class BasePlayer(ABC):
                 case Move.PAPER: return Paper()
                 case Move.SCISSORS: return Scissors()
         if isinstance(move, str):
-            move_enum = Move.from_input(move)
+            move_enum = Move.get_move(move)
             return BasePlayer._resolve_move(move_enum)
 
         raise TypeError(f"Invalid move type: {type(move).__name__}")
