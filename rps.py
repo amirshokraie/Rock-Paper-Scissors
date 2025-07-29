@@ -28,7 +28,7 @@ class Move(Enum):
         """Sanitize and validate raw_move (e.g., 'R', 'P', 'S') and return corresponding Move enum."""
         if not isinstance(raw_move, str):
             raise TypeError(
-                f"Expected a string for raw_move, but got {type(raw_move).__name__} instead."
+                f"Expected a string for raw_move, but got {_get_class_name(raw_move)} instead."
             )
 
         sanitized = raw_move.strip().upper()
@@ -60,7 +60,7 @@ class BaseMove:
             raise NotImplementedError("Subclasses must define '_move'.")
         if not isinstance(self._move, Move):
             raise TypeError(
-                f"_move must be of type Move, not {type(self._move).__name__}"
+                f"_move must be of type Move, not {_get_class_name(self._move)}"
             )
 
     def __eq__(self, other):
@@ -134,7 +134,7 @@ class BasePlayer(ABC):
             move_enum = Move.get_move(move)
             return BasePlayer._resolve_move(move_enum)
 
-        raise TypeError(f"Invalid move type: {type(move).__name__}")
+        raise TypeError(f"Invalid move type: {_get_class_name(move)}")
 
     @abstractmethod
     def make_move(self, move=None):
