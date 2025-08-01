@@ -100,13 +100,11 @@ class BaseMove:
             )
 
     def __eq__(self, other):
-        if not isinstance(other, BaseMove):
-            raise TypeError
+        self._assert_comparable(other)
         return self._move == other._move
 
     def __gt__(self, other):
-        if not isinstance(other, BaseMove):
-            raise TypeError
+        self._assert_comparable(other)
         return other._move in self._dominance[self._move]
 
     def __lt__(self, other):
@@ -117,7 +115,7 @@ class BaseMove:
 
     def __hash__(self):
         return hash(self._move)
-    
+
     def _assert_comparable(self, other):
         if not isinstance(other, BaseMove):
             raise TypeError(
