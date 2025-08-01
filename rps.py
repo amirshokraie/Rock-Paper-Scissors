@@ -1,3 +1,39 @@
+"""
+Rock-Paper-Scissors game implementation.
+
+This module provides a complete, object-oriented implementation of the Rock-Paper-Scissors game.
+Players (human or computer) compete by selecting one of three moves: Rock, Paper, or Scissors.
+The game continues until one player reaches a specified winning score.
+
+Core Game Logic:
+The outcome of each round is determined using a **cyclic dominance pattern**:
+    - Rock beats Scissors
+    - Scissors beats Paper
+    - Paper beats Rock
+
+This dominance relationship is implemented using operator overloading (`>`, `<`, `==`) between move instances
+(`Rock()`, `Paper()`, `Scissors()`). The comparison behavior is defined in the abstract base class `BaseMove`,
+which maintains a `_dominance` mapping to express the circular logic clearly and concisely. By comparing objects
+directly (e.g., `Rock() > Scissors()`), the game logic becomes both intuitive and extensible, allowing for natural
+expression of matchups and future expandability (e.g., adding Lizard-Spock).
+
+Key Components:
+- `Move`: An enumeration defining the valid move types (ROCK, PAPER, SCISSORS).
+- `BaseMove`: An abstract base class for move types, encapsulating move identity and outcome logic.
+- `Rock`, `Paper`, `Scissors`: Concrete move classes inheriting from `BaseMove`.
+- `BasePlayer`: An abstract player base class that handles score tracking and move resolution.
+- `Player`: A human-controlled player.
+- `ComputerPlayer`: A computer-controlled player with randomized move selection.
+- `RPSGame`: Manages game rounds, players, scoring, and win conditions.
+
+Additional Features:
+- Flexible input: Accepts moves as strings, enum values, or move objects.
+- Type-safe input validation and detailed error handling for robustness.
+- Clean separation of game logic and I/O — suitable for testing and reuse.
+
+Note: The `__main__` block at the end of the module is provided as an example usage and is not part of the core API.
+"""
+
 import random
 from abc import ABC, abstractmethod
 from enum import Enum
@@ -224,7 +260,9 @@ if __name__ == "__main__":
 
         print(f"{winner.name} wins the game with {winner.score} points!")
 
-        response = input("Type 'Y' to play again, or anything else to quit: ").strip().upper()
+        response = (
+            input("Type 'Y' to play again, or anything else to quit: ").strip().upper()
+        )
         play_again = response == "Y"
 
         if play_again:
