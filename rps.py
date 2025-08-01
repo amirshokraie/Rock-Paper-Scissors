@@ -85,9 +85,9 @@ class BaseMove:
     """
 
     _dominance = {
-        Move.ROCK: [Move.SCISSORS],
-        Move.SCISSORS: [Move.PAPER],
-        Move.PAPER: [Move.ROCK],
+        Move.ROCK: [Move.SCISSORS],  # Rock beats Scissors.
+        Move.SCISSORS: [Move.PAPER],  # Scissors beats Paper.
+        Move.PAPER: [Move.ROCK],  # Paper beats Rock.
     }
     _move = None
 
