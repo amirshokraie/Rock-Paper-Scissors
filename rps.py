@@ -105,7 +105,7 @@ class BaseMove:
 
     def __gt__(self, other):
         self._assert_comparable(other)
-        return other._move in self._dominance[self._move]
+        return other._move in self._dominance.get(self._move, [])
 
     def __lt__(self, other):
         return not (self > other or self == other)
