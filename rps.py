@@ -117,6 +117,13 @@ class BaseMove:
 
     def __hash__(self):
         return hash(self._move)
+    
+    def _assert_comparable(self, other):
+        if not isinstance(other, BaseMove):
+            raise TypeError(
+                f"Cannot compare {_get_class_name(self)} with {_get_class_name(other)}. "
+                "Expected a BaseMove instance."
+            )
 
 
 class Rock(BaseMove):
